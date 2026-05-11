@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flashcards Derecho — Prepara tu Examen de Grado</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0a0f1e;
+    --navy2: #111827;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-pale: #f5e9c8;
+    --green-pale: #c8dbc0;
+    --white: #f9f6ef;
+    --muted: #8a8fa8;
+    --card-bg: #141c2e;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-ornament {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.1s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.25s forwards;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 480px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero-cta {
+    margin-top: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.55s forwards;
+  }
+
+  .btn-gold {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 1.5rem auto;
+    opacity: 0.5;
+  }
+
+  /* SECTION */
+  section { padding: 5rem 1.5rem; max-width: 860px; margin: 0 auto; }
+
+  .section-label {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 0.75rem;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  /* CARDS */
+  .packs { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 3rem; }
+
+  .pack-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 16px;
+    padding: 2rem 2rem 1.75rem;
+    position: relative;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .pack-card:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-3px); }
+
+  .pack-card.featured {
+    border-color: var(--gold);
+    background: linear-gradient(135deg, #1a2340 0%, #141c2e 100%);
+  }
+
+  .badge-oferta {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 500;
+    font-size: 0.8rem;
+    padding: 4px 20px;
+    border-radius: 50px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .badge-dcto {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 1.1rem;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.1;
+  }
+
+  .badge-dcto small { font-size: 0.6rem; font-weight: 500; }
+
+  .pack-tag {
+    display: inline-block;
+    background: rgba(201,168,76,0.12);
+    color: var(--gold-light);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 3px 12px;
+    border-radius: 50px;
+    margin-bottom: 0.75rem;
+  }
+
+  .pack-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .pack-price {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    line-height: 1;
+  }
+
+  .pack-price-orig {
+    font-size: 1rem;
+    color: var(--muted);
+    text-decoration: line-through;
+    margin-left: 0.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+  }
+
+  .pack-includes {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .pack-includes strong {
+    color: var(--green-pale);
+    font-weight: 500;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .pack-btn {
+    display: block;
+    text-align: center;
+    margin-top: 1.5rem;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    cursor: pointer;
+  }
+
+  .pack-btn:hover { background: var(--gold); color: var(--navy); }
+  .pack-card.featured .pack-btn { background: var(--gold); color: var(--navy); }
+  .pack-card.featured .pack-btn:hover { background: var(--gold-light); }
+
+  /* UNITARIO */
+  .unit-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    margin-top: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .unit-row:hover { border-color: rgba(201,168,76,0.3); }
+
+  .unit-icon {
+    font-size: 1.6rem;
+    min-width: 40px;
+    text-align: center;
+  }
+
+  .unit-info { flex: 1; }
+  .unit-name { font-weight: 500; font-size: 0.95rem; }
+  .unit-desc { font-size: 0.82rem; color: var(--muted); }
+
+  .unit-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  /* FAQ / GARANTIA */
+  .guarantee-box {
+    background: var(--card-bg);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-top: 3rem;
+    text-align: center;
+  }
+
+  .guarantee-box p { color: var(--muted); font-size: 0.95rem; max-width: 500px; margin: 0.75rem auto 0; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  footer a { color: var(--gold); text-decoration: none; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .modal-overlay.active { display: flex; }
+
+  .modal {
+    background: var(--card-bg);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 20px;
+    padding: 2.5rem;
+    max-width: 440px;
+    width: 100%;
+    position: relative;
+    animation: fadeUp 0.3s forwards;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1.25rem; right: 1.25rem;
+    background: none; border: none;
+    color: var(--muted); font-size: 1.5rem;
+    cursor: pointer; line-height: 1;
+  }
+
+  .modal h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .modal p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+  .modal .btn-gold { width: 100%; text-align: center; display: block; margin-top: 0.75rem; }
+  .modal .btn-secondary {
+    display: block; width: 100%; text-align: center;
+    padding: 0.75rem; border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 50px; color: var(--muted); font-size: 0.9rem;
+    margin-top: 0.75rem; cursor: pointer; background: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.2s;
+    text-decoration: none;
+  }
+  .modal .btn-secondary:hover { border-color: var(--gold); color: var(--white); }
+
+  .mp-logo { height: 22px; vertical-align: middle; margin-right: 6px; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-ornament">⚖️</div>
+  <h1>Prepara tu<br><em>examen de grado</em></h1>
+  <div class="divider"></div>
+  <p class="hero-sub">Flashcards de Derecho diseñadas para que domines cada materia con confianza.</p>
+  <div class="hero-cta">
+    <a href="#packs" class="btn-gold">Ver packs disponibles</a>
+  </div>
+</div>
+
+<!-- PACKS -->
+<section id="packs">
+  <span class="section-label">Packs de estudio</span>
+  <h2 class="section-title">Elige tu pack</h2>
+  <p style="color:var(--muted); max-width:520px;">Cada pack incluye flashcards de todas las materias del área, listas para repasar en cualquier momento.</p>
+
+  <div class="packs">
+
+    <!-- PACK COMPLETO -->
+    <div class="pack-card featured">
+      <div class="badge-oferta">⚡ Oferta especial</div>
+      <div class="badge-dcto">40%<small>DCTO.</small></div>
+      <div class="pack-tag">Pack completo</div>
+      <div class="pack-title">Derecho Civil + Procesal</div>
+      <div style="margin-top:0.5rem;">
+        <span class="pack-price">$40.000</span>
+        <span class="pack-price-orig">$75.000</span>
+      </div>
+      <div class="pack-includes">
+        <strong>Incluye 15 materias</strong>
+        Teoría de la ley · Acto jurídico · Bienes · Obligaciones · Contratos · Responsabilidad civil · Derecho de familia · Derecho sucesorio · Procesal orgánico · Procesal funcional · Juicio ordinario · Juicio ejecutivo · Juicio sumario · Procesal penal · Recursos
+      </div>
+      <a href="#" class="pack-btn" onclick="openModal('Pack Completo Civil + Procesal','$40.000'); return false;">Comprar con Mercado Pago</a>
+    </div>
+
+    <!-- CIVIL -->
+    <div class="pack-card">
+      <div class="pack-tag">Derecho Civil</div>
+      <div class="pack-title">Pack Flashcards Civil</div>
+      <div style="margin-top:0.5rem; display:flex; align-items:baseline; gap:0.5rem;">
+        <span class="pack-price">$25.000</span>
+        <span class="pack-price-orig">$40.000</span>
+      </div>
+      <div class="pack-includes">
+        <strong>8 materias</strong>
+        Teoría de la ley · Acto jurídico · Bienes · Obligaciones · Contratos · Responsabilidad civil · Derecho de familia · Derecho sucesorio
+      </div>
+      <a href="#" class="pack-btn" onclick="openModal('Pack Flashcards Derecho Civil','$25.000'); return false;">Comprar con Mercado Pago</a>
+    </div>
+
+    <!-- PROCESAL -->
+    <div class="pack-card">
+      <div class="pack-tag">Derecho Procesal</div>
+      <div class="pack-title">Pack Flashcards Procesal</div>
+      <div style="margin-top:0.5rem; display:flex; align-items:baseline; gap:0.5rem;">
+        <span class="pack-price">$25.000</span>
+        <span class="pack-price-orig">$35.000</span>
+      </div>
+      <div class="pack-includes">
+        <strong>7 materias</strong>
+        Procesal orgánico · Procesal funcional · Juicio ordinario · Procedimientos especiales · Juicio ejecutivo · Juicio sumario · Procesal penal parte general · Procesal penal parte especial · Recursos
+      </div>
+      <a href="#" class="pack-btn" onclick="openModal('Pack Flashcards Derecho Procesal','$25.000'); return false;">Comprar con Mercado Pago</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- UNITARIO + INTERROGACIONES -->
+<section style="padding-top:0;">
+  <span class="section-label">También disponible</span>
+  <h2 class="section-title" style="font-size:1.6rem;">Unidades sueltas e interrogaciones</h2>
+
+  <div class="unit-row">
+    <div class="unit-icon">📄</div>
+    <div class="unit-info">
+      <div class="unit-name">Flashcards por materia</div>
+      <div class="unit-desc">Compra solo la materia que necesitas repasar</div>
+    </div>
+    <div>
+      <div class="unit-price">$5.000</div>
+      <a href="#" onclick="openModal('Flashcards por materia (unidad)','$5.000'); return false;" class="pack-btn" style="margin-top:0.5rem; padding:0.5rem 1.25rem; font-size:0.82rem;">Comprar</a>
+    </div>
+  </div>
+
+  <div class="unit-row">
+    <div class="unit-icon">🎙️</div>
+    <div class="unit-info">
+      <div class="unit-name">Interrogaciones</div>
+      <div class="unit-desc">Sesión de práctica oral de 1 hora</div>
+    </div>
+    <div>
+      <div class="unit-price">$10.000/hr</div>
+      <a href="#" onclick="openModal('Interrogación (1 hora)','$10.000'); return false;" class="pack-btn" style="margin-top:0.5rem; padding:0.5rem 1.25rem; font-size:0.82rem;">Reservar</a>
+    </div>
+  </div>
+</section>
+
+<!-- GARANTIA -->
+<section style="padding-top:0;">
+  <div class="guarantee-box">
+    <div style="font-size:2rem; margin-bottom:0.75rem;">✅</div>
+    <h3 style="font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700;">Material probado y actualizado</h3>
+    <p>Flashcards elaboradas por estudiante de Derecho, basadas en la bibliografía oficial del examen de grado. Si tienes dudas, contáctame directamente.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Pagos procesados por <strong style="color:var(--gold);">Mercado Pago</strong> · Recibes el material al instante</p>
+  <p style="margin-top:0.5rem;">¿Preguntas? Escríbeme por <a href="https://wa.me/56900000000" target="_blank">WhatsApp</a></p>
+  <p style="margin-top:1.5rem; font-size:0.78rem; opacity:0.4;">© 2025 Flashcards Derecho</p>
+</footer>
+
+<!-- MODAL PAGO -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h3 id="modal-title">Pack Completo</h3>
+    <p>Pagarás <strong id="modal-price" style="color:var(--gold);"></strong> de forma segura a través de Mercado Pago. Recibirás el material por correo o WhatsApp.</p>
+    <!-- REEMPLAZA ESTE LINK CON TU LINK DE PAGO DE MERCADO PAGO -->
+    <a href="TU_LINK_DE_MERCADO_PAGO_AQUI" class="btn-gold" target="_blank" id="modal-btn">
+      Pagar con Mercado Pago
+    </a>
+    <a href="https://wa.me/56900000000?text=Hola,%20quiero%20comprar%20las%20flashcards" class="btn-secondary" target="_blank">
+      💬 Pedir por WhatsApp
+    </a>
+  </div>
+</div>
+
+<script>
+  function openModal(title, price) {
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-price').textContent = price;
+    document.getElementById('modal').classList.add('active');
+  }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('active');
+  }
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+</script>
+</body>
+</html>
